@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Abstraction", "Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{C3DE0566-A972-49EE-978A-67A861B559C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Infrastructure\Persistence\Persistence.csproj", "{52196AF6-A764-467E-AA81-AEE283DFCB3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "persistence", "Infrastructure\Persistence\persistence.csproj", "{52196AF6-A764-467E-AA81-AEE283DFCB3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Infrastructure\Presentation\Presentation.csproj", "{B76E5944-306E-4EA4-8C21-B3B381936742}"
 EndProject
