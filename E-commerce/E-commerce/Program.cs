@@ -1,9 +1,12 @@
 
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using persistence.Repositories;
 using Persistence.Data;
 using Persistence.Data.DataSeeding;
+using Services.Abstraction;
+using Services;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
 
@@ -17,7 +20,9 @@ namespace E_commerce
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+            ;
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -29,6 +34,8 @@ namespace E_commerce
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
 
             builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 

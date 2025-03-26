@@ -19,6 +19,6 @@ namespace Services
 
             _productService = new Lazy<IProductService>(() => new ProductService( unitOfWork, mapper ));
         }
-        public IProductService ProductService => throw new NotImplementedException();
+        public IProductService ProductService => _productService.Value;
     }
 }
