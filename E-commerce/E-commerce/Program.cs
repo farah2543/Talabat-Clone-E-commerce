@@ -1,9 +1,11 @@
 
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using persistence.Repositories;
 using Persistence.Data;
 using Persistence.Data.DataSeeding;
 using System.Net.WebSockets;
+using System.Reflection.Metadata;
 
 namespace E_commerce
 {
@@ -26,6 +28,11 @@ namespace E_commerce
             });
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
+
+
 
             var app = builder.Build();
 
