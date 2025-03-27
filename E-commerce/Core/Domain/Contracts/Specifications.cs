@@ -18,10 +18,24 @@ namespace Domain.Contracts
 
         // Second Method => Include()
         public List<Expression<Func<T, object>>> IncludeExpression { get; } = new();
-   
+
+
+        public Expression<Func<T, object>> OrderBy { get; private set; }
+        public Expression<Func<T, object>> OrderByDesc { get; private set; }
+
+
         // Method to Add Includes
         protected void AddInclude(Expression<Func<T, object>> expression)
             => IncludeExpression.Add(expression);
+
+
+        protected void SetOrderBy(Expression<Func<T, object>> expression) 
+            => OrderBy = expression;
+
+
+        protected void SetOrderByDesc(Expression<Func<T, object>> expression)
+       => OrderByDesc = expression;
+
 
 
 

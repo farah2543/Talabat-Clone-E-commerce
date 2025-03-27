@@ -16,9 +16,9 @@ namespace Presentation
 
         [HttpGet("Products")]
 
-        public async Task<ActionResult <IEnumerable<ProductResultDTO>>> GetAllProduct()
+        public async Task<ActionResult <IEnumerable<ProductResultDTO>>> GetAllProduct(string? sort, int? brandId, int? typeId)
         {
-            var products =  await _serviceManager.ProductService.GetAllProductsAsync();   
+            var products =  await _serviceManager.ProductService.GetAllProductsAsync(sort,brandId,typeId);   
             return Ok(products);
 
 
