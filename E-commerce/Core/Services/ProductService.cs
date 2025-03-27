@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Entities;
 using Services.Abstraction;
+using Services.Specifications;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    class ProductService (IUnitOfWork _unitOfWork,IMapper _mapper) : IProductService
+    public class ProductService (IUnitOfWork _unitOfWork,IMapper _mapper) : IProductService
     {
 
         public async Task<IEnumerable<BrandResultDTO>> GetAllBrandsAsync()
         {
-            var brands = await _unitOfWork.GenericRepository<ProductBrand, int>().GetAllAsync();
+            var brands = await _unitOfWork.GenericRepository<ProductBrand, int>().GetAllAsync(true);
 
             var brandsResult = _mapper.Map<IEnumerable<BrandResultDTO>>(brands);
 
@@ -27,7 +28,7 @@ namespace Services
 
         public async Task<IEnumerable<ProductResultDTO>> GetAllProductsAsync()
         {
-            var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync();
+            var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecification());
 
             var productResult = _mapper.Map<IEnumerable<ProductResultDTO>>(product);
 
@@ -45,7 +46,7 @@ namespace Services
 
         public async Task<ProductResultDTO> GetProductByIdAsync(int id)
         {
-            var product = await _unitOfWork.GenericRepository<Product, int>().GetByIdAsync(id);
+            var product = await _unitOfWork.GenericRepository<Product, int>().GetByIdAsync(new ProductWithBrandAndTypeSpecification(id));
 
             var productResult = _mapper.Map<ProductResultDTO>(product);
 
