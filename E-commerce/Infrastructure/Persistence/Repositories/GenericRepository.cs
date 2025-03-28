@@ -1,5 +1,7 @@
 ﻿
 
+using Persistence.Repositories;
+
 namespace persistence.Repositories
 {
     public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
@@ -30,7 +32,14 @@ namespace persistence.Repositories
                 : await _dbContext.Set<TEntity>().ToListAsync(); // False
 
 
+        public async Task<TEntity?> GetByIdAsync(Specifications<TEntity> specifications)
+           => await ApplySpecifications(specifications).FirstOrDefaultAsync();
 
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Specifications<TEntity> specifications)
+            => await ApplySpecifications(specifications).ToListAsync();
+
+        private IQueryable<TEntity> ApplySpecifications(Specifications<TEntity> specifications)
+            => SpecificationEvaluator.GetQuery<TEntity>(_dbContext.Set<TEntity>(), specifications);
 
 
 
