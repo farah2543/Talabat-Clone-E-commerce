@@ -57,9 +57,15 @@ namespace Services.Specifications
 
             }
 
+            ApplyPagination(parameters.PageIndex, parameters.PageSize);
+
 
 
         }
+
+
+
+
 
     }
 }
