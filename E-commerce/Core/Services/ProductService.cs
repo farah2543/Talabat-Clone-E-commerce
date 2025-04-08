@@ -3,7 +3,7 @@ using Domain.Contracts;
 using Domain.Entities;
 using Services.Abstraction;
 using Services.Specifications;
-using Shared;
+using Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

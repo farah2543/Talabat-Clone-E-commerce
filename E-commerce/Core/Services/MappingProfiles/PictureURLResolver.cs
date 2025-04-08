@@ -2,7 +2,7 @@
 using AutoMapper.Execution;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
-using Shared;
+using Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
