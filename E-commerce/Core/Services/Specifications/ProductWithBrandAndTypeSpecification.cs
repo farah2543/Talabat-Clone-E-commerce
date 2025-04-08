@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,30 +22,33 @@ namespace Services.Specifications
         }
 
 
-        public ProductWithBrandAndTypeSpecification(string ? sort, int? brandId , int? typeId)
+        public ProductWithBrandAndTypeSpecification(ProductParametersSpecifications parameters )
             : base(/*Filter*/ product =>
-                (!brandId.HasValue || product.BrandId == brandId.Value) &&
-                (!typeId.HasValue || product.TypeId == typeId.Value)
+                (!parameters.BrandId.HasValue || product.BrandId == parameters.BrandId.Value) &&
+                (!parameters.TypeId.HasValue || product.TypeId == parameters.TypeId.Value)
 )
         {
             AddInclude(product => product.ProductBrand);
 
             AddInclude(product => product.ProductType);
 
-            if (!string.IsNullOrWhiteSpace(sort))
+            if (parameters.Sort is not null )
             {
-                switch (sort.ToLower().Trim())
+                switch (parameters.Sort)
                 {
-                    case "pricedesc":
+                    case ProductSortOptions.PriceDesc:
                         SetOrderByDesc(p => p.Price);
                         break;
-                    case "priceasc":
+
+                    case ProductSortOptions.PriceAsc:
                         SetOrderBy(p => p.Price);
                         break;
-                    case "namedesc":
+
+                    case ProductSortOptions.NameDesc:
                         SetOrderByDesc(p => p.Name);
                         break;
-                    default:
+
+                    default:  // This handles NameAsc and any unexpected values
                         SetOrderBy(p => p.Name);
                         break;
                 }
