@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
-    public class ProductParametersSpecifications
+    public class ProductSpecificationParameters
     {
         public int? TypeId { get; set; }
         public int? BrandId { get; set; }
         public ProductSortOptions? Sort { get; set; }
+
+        public string? Search {  get; set; }
 
         public int PageIndex { get; set; } = 1;
 

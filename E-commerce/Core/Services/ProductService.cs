@@ -28,7 +28,7 @@ namespace Services
 
         }
 
-        public async Task<PaginatedResult<ProductResultDTO>> GetAllProductsAsync(ProductParametersSpecifications parameters)
+        public async Task<PaginatedResult<ProductResultDTO>> GetAllProductsAsync(ProductSpecificationParameters parameters)
         {
             var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecification(parameters));
 
