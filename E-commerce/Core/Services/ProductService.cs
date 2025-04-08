@@ -8,6 +8,7 @@ using Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,13 +28,25 @@ namespace Services
 
         }
 
-        public async Task<IEnumerable<ProductResultDTO>> GetAllProductsAsync(ProductParametersSpecifications parameters)
+        public async Task<PaginatedResult<ProductResultDTO>> GetAllProductsAsync(ProductParametersSpecifications parameters)
         {
             var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecification(parameters));
 
+            var totalCount = await _unitOfWork.GenericRepository<Product, int>().CountAsync(new ProductCountSpecification(parameters));
+
+
             var productResult = _mapper.Map<IEnumerable<ProductResultDTO>>(product);
 
-           return productResult;
+            //return productResult;
+
+            var result = new PaginatedResult<ProductResultDTO>(
+                productResult.Count(),
+                parameters.PageIndex,
+                totalCount,
+                productResult
+                );
+            return result;
+
         }
 
         public async Task<IEnumerable<TypeResultDTO>> GetAllTypesAsync()
