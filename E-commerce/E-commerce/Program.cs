@@ -9,6 +9,7 @@ using Services.Abstraction;
 using Services;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
+using E_commerce.Middlewares;
 
 namespace E_commerce
 {
@@ -42,6 +43,8 @@ namespace E_commerce
 
 
             var app = builder.Build();
+
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             await InitializeDbAsync(app);
 
