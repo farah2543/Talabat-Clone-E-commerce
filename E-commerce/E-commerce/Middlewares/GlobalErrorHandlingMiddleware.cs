@@ -1,4 +1,5 @@
-﻿using Shared.ErrorModels;
+﻿using Domain.Exceptions;
+using Shared.ErrorModels;
 using System.Net;
 
 namespace E_commerce.Middlewares
@@ -34,6 +35,13 @@ namespace E_commerce.Middlewares
         {
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            httpContext.Response.StatusCode = e switch
+            {
+                NotFoundException => (int)HttpStatusCode.NotFound, 
+                _ => (int)HttpStatusCode.InternalServerError       
+            };
+
 
             var response = new ErrorDetails
             {
