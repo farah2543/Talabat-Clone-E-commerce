@@ -9,7 +9,7 @@ namespace E_commerce.Extensions
         {
             // Register ServiceManager as the implementation of IServiceManager with scoped lifetime
             services.AddScoped<IServiceManager, ServiceManager>();
-
+            
             // Add AutoMapper and scan the assembly containing Services.AssemblyReference for mapping profiles
             services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 

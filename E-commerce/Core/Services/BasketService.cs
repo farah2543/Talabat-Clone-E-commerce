@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class BasketInterface (IBasketRepository _basketRepository, IMapper _mapper) : IBasketService
+    public class BasketService(IBasketRepository _basketRepository, IMapper _mapper) : IBasketService
     {
         public Task<bool> DeleteBasketAsync(string id)
             => _basketRepository.DeleteBasketAsync(id);

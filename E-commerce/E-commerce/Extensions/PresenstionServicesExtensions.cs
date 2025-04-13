@@ -17,6 +17,7 @@ namespace E_commerce.Extensions
             // Add Swagger generation
             services.AddSwaggerGen();
 
+
             // Configure custom model state validation response
             services.Configure<ApiBehaviorOptions>(options =>
             {
