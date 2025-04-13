@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared
+namespace Shared.DTOs
 {
     public record ProductResultDTO
     {
@@ -15,7 +15,7 @@ namespace Shared
         public decimal Price { get; set; }
         public string BrandName { get; set; }
 
-        public string TypeName { get; set;}
+        public string TypeName { get; set; }
     }
 
 

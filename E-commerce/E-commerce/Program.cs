@@ -9,6 +9,9 @@ using Services.Abstraction;
 using Services;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
+using E_commerce.Middlewares;
+using E_commerce.Factories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce
 {
@@ -39,9 +42,14 @@ namespace E_commerce
 
             builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 
-
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
+            });
 
             var app = builder.Build();
+
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
             await InitializeDbAsync(app);
 

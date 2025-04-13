@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Services.Abstraction;
 using Services.Specifications;
 using Shared;
+using Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +20,7 @@ namespace Services
 
         public async Task<IEnumerable<BrandResultDTO>> GetAllBrandsAsync()
         {
-            var brands = await _unitOfWork.GenericRepository<ProductBrand, int>().GetAllAsync(true);
+            var brands = await _unitOfWork.GenericRepository<ProductBrand, int>().GetAllAsync();
 
             var brandsResult = _mapper.Map<IEnumerable<BrandResultDTO>>(brands);
 
@@ -26,18 +29,30 @@ namespace Services
 
         }
 
-        public async Task<IEnumerable<ProductResultDTO>> GetAllProductsAsync(string ?sort , int? brandId , int? typeId)
+        public async Task<PaginatedResult<ProductResultDTO>> GetAllProductsAsync(ProductSpecificationParameters parameters)
         {
-            var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecification(sort,brandId,typeId));
+            var product = await _unitOfWork.GenericRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecification(parameters));
+
+            var totalCount = await _unitOfWork.GenericRepository<Product, int>().CountAsync(new ProductCountSpecification(parameters));
+
 
             var productResult = _mapper.Map<IEnumerable<ProductResultDTO>>(product);
 
-           return productResult;
+            //return productResult;
+
+            var result = new PaginatedResult<ProductResultDTO>(
+                productResult.Count(),
+                parameters.PageIndex,
+                totalCount,
+                productResult
+                );
+            return result;
+
         }
 
         public async Task<IEnumerable<TypeResultDTO>> GetAllTypesAsync()
         {
-            var type = await _unitOfWork.GenericRepository<ProductType, int>().GetAllAsync(true);
+            var type = await _unitOfWork.GenericRepository<ProductType, int>().GetAllAsync();
 
             var typeResult = _mapper.Map<IEnumerable<TypeResultDTO>>(type);
 
@@ -48,9 +63,11 @@ namespace Services
         {
             var product = await _unitOfWork.GenericRepository<Product, int>().GetByIdAsync(new ProductWithBrandAndTypeSpecification(id));
 
-            var productResult = _mapper.Map<ProductResultDTO>(product);
+            //var productResult = _mapper.Map<ProductResultDTO>(product);
 
-            return productResult;
+            //return productResult;
+
+            return product is null  ? throw new ProductNotFoundException(id) : _mapper.Map<ProductResultDTO>(product);
 
 
 

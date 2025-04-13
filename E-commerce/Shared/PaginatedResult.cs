@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
-    public record TypeResultDTO
+    public record PaginatedResult<TData>(int pageSize, int PageIndex, int totalCount,IEnumerable<TData> data )
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+
     }
 }
