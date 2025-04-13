@@ -12,6 +12,7 @@ using System.Reflection.Metadata;
 using E_commerce.Middlewares;
 using E_commerce.Factories;
 using Microsoft.AspNetCore.Mvc;
+using E_commerce.Extensions;
 
 namespace E_commerce
 {
@@ -21,37 +22,21 @@ namespace E_commerce
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            #region Services
 
-            builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-            ;
+            builder.Services.AddPresentationServices();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddCoreServices();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-            });
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            #endregion
 
-            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
-
-
-            builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
-
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
-            });
+            #region MiddleWare
 
             var app = builder.Build();
+            app.UseCustomMiddleWare();
 
-            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
-
-            await InitializeDbAsync(app);
+            await app.SeedDbAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -68,15 +53,12 @@ namespace E_commerce
 
             app.MapControllers();
 
+
             app.Run();
 
-            async Task InitializeDbAsync(WebApplication app)
-            {
-                using var scope = app.Services.CreateScope();
-                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-                await dbInitializer.initializeAsync();
+            #endregion
 
-            }
+
         }
     }
 }

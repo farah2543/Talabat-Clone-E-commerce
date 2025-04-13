@@ -45,7 +45,7 @@ namespace E_commerce.Middlewares
                 ErrorMessage = $"the EndPoint {httpContext.Request.Path} is not found "
             }.ToString();
 
-            await httpContext.Response.WriteAsync(response);ustom
+            await httpContext.Response.WriteAsync(response);
 
 
         }

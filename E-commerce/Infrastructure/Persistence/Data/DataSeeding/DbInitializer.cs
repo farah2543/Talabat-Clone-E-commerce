@@ -16,7 +16,7 @@ namespace Persistence.Data.DataSeeding
         {
             _dbContext = dbContext;
         }
-        public async Task initializeAsync()
+        public async Task InitializeAsync()
         {
             try
             {
