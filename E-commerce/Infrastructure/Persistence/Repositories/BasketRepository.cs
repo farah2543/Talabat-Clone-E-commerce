@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace persistence.Repositories
 {
-    internal class BasketRepository(IConnectionMultiplexer connectionMultiplexer) : IBasketRepository
+    public class BasketRepository(IConnectionMultiplexer connectionMultiplexer) : IBasketRepository
     {
         private readonly IDatabase _database = connectionMultiplexer.GetDatabase();
         public async Task<bool> DeleteBasketAsync(string id)

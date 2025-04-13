@@ -3,8 +3,6 @@ using Persistence.Data.DataSeeding;
 using Persistence.Data;
 using persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using Microsoft.AspNetCore.Connections.Features;
 using StackExchange.Redis;
 
 namespace E_commerce.Extensions
@@ -22,14 +20,22 @@ namespace E_commerce.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
             });
 
+            services.AddSingleton<IConnectionMultiplexer>(services =>
+            ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
+
             // Register database initializer
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             // Register Unit of Work pattern implementation
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddSingleton<IConnectionMultiplexer>(services =>
-            ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
+            services.AddScoped<IBasketRepository, BasketRepository>();
+
+
+
+      
+
+
 
 
 
