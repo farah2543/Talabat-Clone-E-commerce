@@ -4,6 +4,7 @@ using Persistence.Data;
 using persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using persistence.Identity;
 
 namespace E_commerce.Extensions
 {
@@ -18,6 +19,11 @@ namespace E_commerce.Extensions
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
+            });
+
+            services.AddDbContext<IdentityAppDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"));
             });
 
             services.AddSingleton<IConnectionMultiplexer>(services =>
