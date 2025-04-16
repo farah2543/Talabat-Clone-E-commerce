@@ -5,6 +5,8 @@ using persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using persistence.Identity;
+using Microsoft.AspNetCore.Identity;
+using Domain.Entities;
 
 namespace E_commerce.Extensions
 {
@@ -25,6 +27,17 @@ namespace E_commerce.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"));
             });
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.User.RequireUniqueEmail = true;
+
+
+            }).AddEntityFrameworkStores<IdentityAppDbContext>();
 
             services.AddSingleton<IConnectionMultiplexer>(services =>
             ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
