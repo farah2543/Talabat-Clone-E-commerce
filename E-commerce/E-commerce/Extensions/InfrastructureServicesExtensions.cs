@@ -7,6 +7,11 @@ using StackExchange.Redis;
 using persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Domain.Entities;
+using Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace E_commerce.Extensions
 {
@@ -50,12 +55,7 @@ namespace E_commerce.Extensions
 
             services.AddScoped<IBasketRepository, BasketRepository>();
 
-
-
-      
-
-
-
+            services.ConfigureJwt(configuration);
 
 
             return services;
@@ -65,10 +65,43 @@ namespace E_commerce.Extensions
 
 
         }
-   
+
+        public static IServiceCollection ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            var jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidAudience = jwtOptions.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+
+                };
+            });
+
+            services.AddAuthorization();
+
+            return services;
 
 
 
+
+
+        }
 
     }
 }

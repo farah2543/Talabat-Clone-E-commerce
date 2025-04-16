@@ -12,7 +12,7 @@ namespace E_commerce
 
             builder.Services.AddPresentationServices();
 
-            builder.Services.AddCoreServices();
+            builder.Services.AddCoreServices(builder.Configuration);
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
             #endregion
@@ -31,11 +31,11 @@ namespace E_commerce
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-            app.UseStaticFiles();
-
 
             app.MapControllers();
 
