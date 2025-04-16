@@ -1,17 +1,3 @@
-
-using Domain.Contracts;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using persistence.Repositories;
-using Persistence.Data;
-using Persistence.Data.DataSeeding;
-using Services.Abstraction;
-using Services;
-using System.Net.WebSockets;
-using System.Reflection.Metadata;
-using E_commerce.Middlewares;
-using E_commerce.Factories;
-using Microsoft.AspNetCore.Mvc;
 using E_commerce.Extensions;
 
 namespace E_commerce

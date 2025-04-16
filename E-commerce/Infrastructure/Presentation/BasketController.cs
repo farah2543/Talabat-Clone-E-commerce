@@ -4,9 +4,8 @@ using Shared.DTOs;
 
 namespace Presentation
 {
-    [ApiController]
-    [Route("/api/[Controller]")]
-    public class BasketController (IServiceManager _serviceManager): ControllerBase
+
+    public class BasketController (IServiceManager _serviceManager): ApiController
     {
         [HttpGet("{id}")]
         public async Task <ActionResult<BasketDTO>>Get(string id)

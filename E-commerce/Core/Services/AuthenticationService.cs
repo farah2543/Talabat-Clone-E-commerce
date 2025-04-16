@@ -14,7 +14,6 @@ namespace Services
             if (user is null)
                 throw new UnauthorizedAccessException();
 
-            // Verify password
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
             if (!result)
                 throw new UnauthorizedAccessException();

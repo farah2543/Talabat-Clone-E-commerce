@@ -65,12 +65,12 @@ namespace E_commerce.Middlewares
 
             httpContext.Response.StatusCode = e switch
             {
-                NotFoundException => (int)HttpStatusCode.NotFound, 
+                NotFoundException => (int)HttpStatusCode.NotFound,
                 UnauthorizedException => (int)HttpStatusCode.Unauthorized,
-                ValidationException validationException => HandleValidationException(validationException,response)
-           
-                _ => (int)HttpStatusCode.InternalServerError       
-            };
+                ValidationException validationException => HandleValidationException(validationException, response),
+
+                _ => (int)HttpStatusCode.InternalServerError
+            } ;
 
 
             response.StatusCode = httpContext.Response.StatusCode;
