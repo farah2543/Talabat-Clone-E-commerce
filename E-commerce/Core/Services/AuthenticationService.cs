@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Services.Abstraction;
 using Shared.DTOs;
@@ -22,9 +23,29 @@ namespace Services
             return new UserResultDto(user.DisplayName, "Token", user.Email);
         }
 
-        public Task<UserResultDto> Register(RegisterDTO registerDTO)
+        public async Task<UserResultDto> Register(RegisterDTO registerDTO)
         {
-            throw new NotImplementedException();
+            var user = new User()
+            {
+                DisplayName = registerDTO.DisplayName,
+                Email = registerDTO.Email,
+                UserName = registerDTO.UserName,
+                PhoneNumber = registerDTO.PhoneNumber,
+
+            };
+            
+            var result =  await _userManager.CreateAsync(user, registerDTO.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description).ToList();
+                throw new ValidationException(errors);
+                
+            }
+
+
+
+            return new UserResultDto(user.DisplayName, "Token", user.Email);
         }
     }
 }
