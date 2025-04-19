@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities;
-using Domain.Exceptions;
+using Domain.Exceptions.NotFoundExceptions;
 using Services.Abstraction;
 using Services.Specifications;
 using Shared;
 using Shared.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {

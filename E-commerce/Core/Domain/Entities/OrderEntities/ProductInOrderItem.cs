@@ -8,13 +8,14 @@ namespace Domain.Entities.OrderEntities
 {
     public class ProductInOrderItem
     {
-        private int id;
-        private string name;
-
-        public ProductInOrderItem(int id, string name, string pictureUrl)
+        public ProductInOrderItem()
         {
-            this.id = id;
-            this.name = name;
+            
+        }
+        public ProductInOrderItem(int productId, string productName, string pictureUrl)
+        {
+            ProductId = productId;
+            ProductName = productName;
             PictureUrl = pictureUrl;
         }
 

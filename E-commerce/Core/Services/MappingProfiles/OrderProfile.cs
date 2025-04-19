@@ -4,6 +4,7 @@ using Domain.Entities.OrderEntities;
 using Shared.OrderModels;
 
 using ShippingAddress = Domain.Entities.OrderEntities.Address;
+using Address = Domain.Entities.Address;
 
 namespace Services.MappingProfiles
 {
@@ -12,6 +13,8 @@ namespace Services.MappingProfiles
         public OrderProfile()
         {
             CreateMap<ShippingAddress, AddressDTO>().ReverseMap();
+
+            CreateMap<Address, AddressDTO>().ReverseMap();
 
             CreateMap<DeliveryMethod, DeliveryMethodResult>().ReverseMap();
 

@@ -53,7 +53,7 @@ namespace Services
                 ,item.Quantity,product.Price);
 
     
-        public async Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync(string userEmail)
+        public async Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync()
         {
             var methods = await unitOfWork.GenericRepository<DeliveryMethod, int>().GetAllAsync();
             return mapper.Map<IEnumerable<DeliveryMethodResult>>(methods);

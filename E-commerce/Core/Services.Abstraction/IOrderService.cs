@@ -13,7 +13,7 @@ namespace Services.Abstraction
         Task<OrderResult> CreateOrderAsync(OrderRequest request, string userEmail);
 
 
-        Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync(string userEmail);
+        Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync();
 
 
 
