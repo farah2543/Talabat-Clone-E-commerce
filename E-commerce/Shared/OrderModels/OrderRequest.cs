@@ -12,6 +12,6 @@ namespace Shared.OrderModels
 
         public AddressDTO ShippingAddress { get; init; }
 
-        public int DeliveryMethod { get; init; }
+        public int DeliveryMethodId { get; init; }
     }
 }
