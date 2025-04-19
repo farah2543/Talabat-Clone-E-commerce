@@ -4,9 +4,29 @@ namespace Domain.Entities.OrderEntities
 {
     public class Order : BaseEntity<Guid>
     {
+       
+        public Order()
+        {
+            
+        }
+
+        public Order(
+            string userEmail,
+            ShippingAddress shippingAddress,
+            ICollection<OrderItem> orderItems, 
+            DeliveryMethod deliveryMethod ,
+            decimal subTotal)
+        {
+            UserEmail = userEmail;
+            ShippingAddress = shippingAddress;
+            this.orderItems = orderItems;
+            DeliveryMethod = deliveryMethod;
+            SubTotal = subTotal;
+        }
+
         public string UserEmail { get; set; }
 
-        public ShippingAddress Address { get; set; }
+        public ShippingAddress ShippingAddress { get; set; }
 
         public ICollection<OrderItem> orderItems { get; set; } = new List<OrderItem>();
 
