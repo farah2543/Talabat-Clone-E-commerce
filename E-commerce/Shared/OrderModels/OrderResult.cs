@@ -22,6 +22,8 @@ namespace Shared.OrderModels
 
         public decimal SubTotal { get; init; }
 
+        public decimal Total { get; init; }
+
 
         public DateTimeOffset OrderDate { get; init; } = DateTimeOffset.Now;
 
