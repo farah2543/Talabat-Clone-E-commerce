@@ -3,7 +3,9 @@ using Domain.Contracts;
 using Domain.Entities;
 using Domain.Entities.OrderEntities;
 using Domain.Exceptions;
+using Domain.Exceptions.NotFoundExceptions;
 using Services.Abstraction;
+using Services.Specifications;
 using Shared.OrderModels;
 using ShippingAddress = Domain.Entities.OrderEntities.Address;
 
@@ -49,20 +51,33 @@ namespace Services
         private OrderItem CreateOrderItem(BasketItem item, Product product)
             => new OrderItem(new ProductInOrderItem(product.Id, product.Name, product.PictureUrl)
                 ,item.Quantity,product.Price);
-     
-        public Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync(string userEmail)
+
+    
+        public async Task<IEnumerable<DeliveryMethodResult>> GetAllDeliveryMethodsAsync(string userEmail)
         {
-            throw new NotImplementedException();
+            var methods = await unitOfWork.GenericRepository<DeliveryMethod, int>().GetAllAsync();
+            return mapper.Map<IEnumerable<DeliveryMethodResult>>(methods);
         }
 
-        public Task<IEnumerable<OrderResult>> GetAllOrdersByEmailAsync(string userEmail)
+        public async Task<IEnumerable<OrderResult>> GetAllOrdersByEmailAsync(string userEmail)
         {
-            throw new NotImplementedException();
+            var order = await unitOfWork.GenericRepository<Order, Guid>()
+              .GetByIdAsync(new OrderWithIncludesSpecifications(userEmail));
+
+
+            return mapper.Map<IEnumerable< OrderResult>>(order);
+            
         }
 
-        public Task<OrderResult> GetOrderByIDAsync(Guid id)
+        public async Task<OrderResult> GetOrderByIDAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var order = await unitOfWork.GenericRepository<Order, Guid>()
+                .GetByIdAsync(new OrderWithIncludesSpecifications(id)) 
+                ?? throw new OrderNotFoundException (id);
+
+            return mapper.Map<OrderResult>(order);
         }
+
+      
     }
 }
