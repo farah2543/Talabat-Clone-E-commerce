@@ -12,7 +12,7 @@ namespace persistence.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.OwnsOne(o => o.ShippingAddress, p => p.WithOwner());
-            builder.HasMany(o => o.orderItems).WithOne();
+            builder.HasMany(o => o.orderItems).WithOne().OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(o => o.PaymentStatus).HasConversion
                 (paymentStatus => paymentStatus.ToString(),
