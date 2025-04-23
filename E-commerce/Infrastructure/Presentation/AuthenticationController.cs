@@ -32,10 +32,6 @@ namespace Presentation
         [HttpGet("EmailExist")]
 
         public async Task<ActionResult<bool>> CheckEmailExist(string email)
-        {
-            return Ok(await serviceManager.AuthenticationService.CheckIfEmailExists(email));
-
-        }
 
         [Authorize]
         [HttpGet]
@@ -68,17 +64,9 @@ namespace Presentation
             var email = User.FindFirstValue(ClaimTypes.Email);
             var result = await serviceManager.AuthenticationService.UpdateUserAddress(address, email);
 
+
             return Ok(result);
         }
-
-
-
-
-
-
-
-
-
 
 
 
