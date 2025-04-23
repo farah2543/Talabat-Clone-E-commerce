@@ -20,8 +20,5 @@ namespace Shared.DTOs
 
         public decimal Price { get; init; }
 
-        public string Brand { get; init; }
-
-        public string Category { get; init; } 
     }
 }

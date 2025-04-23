@@ -18,6 +18,8 @@ namespace Services.Abstraction
         public IOrderService OrderService { get; }
 
 
+        public IPaymentService paymentService { get; }
+
 
 
     }

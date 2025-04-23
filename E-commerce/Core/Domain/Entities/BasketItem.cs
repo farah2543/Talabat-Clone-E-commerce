@@ -18,8 +18,6 @@ namespace Domain.Entities
 
         public decimal Price { get; set; }
 
-        public string Brand { get; set; }
 
-        public string Category { get; set; }
     }
 }
