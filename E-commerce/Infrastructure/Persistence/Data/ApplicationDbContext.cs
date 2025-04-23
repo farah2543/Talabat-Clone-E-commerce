@@ -1,4 +1,6 @@
 ﻿
+using Domain.Entities.OrderEntities;
+
 namespace Persistence.Data
 {
     public class ApplicationDbContext : DbContext
@@ -18,6 +20,14 @@ namespace Persistence.Data
         public DbSet<ProductBrand> ProductBrands { get; set; }
 
         public DbSet<ProductType> ProductTypes { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+
+
 
 
     }

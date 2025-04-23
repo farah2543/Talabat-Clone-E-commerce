@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entities;
+using Domain.Entities.OrderEntities;
+using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 
 namespace Persistence.Data.DataSeeding
@@ -19,46 +21,59 @@ namespace Persistence.Data.DataSeeding
         {
             try
             {
-                if (_dbContext.Database.GetPendingMigrations().Any())
-                {
+                //if (_dbContext.Database.GetPendingMigrations().Any())
+                //{
                     await _dbContext.Database.MigrateAsync();
-                }
-                if (!_dbContext.ProductTypes.Any())
-                {
-                    var typesData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\types.json");
-                    // Convert from json to c# object [deserialization]
-                    var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
-                    if (types is not null && types.Any())
+
+                    if (!_dbContext.ProductTypes.Any())
                     {
-                        await _dbContext.AddRangeAsync(types);
-                        await _dbContext.SaveChangesAsync();
+                        var typesData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\types.json");
+                        // Convert from json to c# object [deserialization]
+                        var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
+                        if (types is not null && types.Any())
+                        {
+                            await _dbContext.AddRangeAsync(types);
+                            await _dbContext.SaveChangesAsync();
+                        }
                     }
-                }
-                if (!_dbContext.ProductBrands.Any())
-                {
-                    var brandsData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\brands.json");
-                    // Convert from json to c# object [deserialization]
-                    var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
-                    if (brands is not null && brands.Any())
+                    if (!_dbContext.ProductBrands.Any())
                     {
-                        await _dbContext.AddRangeAsync(brands);
+                        var brandsData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\brands.json");
+                        // Convert from json to c# object [deserialization]
+                        var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+                        if (brands is not null && brands.Any())
+                        {
+                            await _dbContext.AddRangeAsync(brands);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
+
+                    if (!_dbContext.Products.Any())
+                    {
+                        var productsData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\products.json");
+                        // Convert from json to c# object [deserialization]
+                        var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+                        if (products is not null && products.Any())
+                        {
+                            await _dbContext.AddRangeAsync(products);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
+
+                if (!_dbContext.DeliveryMethods.Any())
+
+                {
+                    var methodsData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\delivery.json");
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(methodsData);
+
+                    if (methods is not null && methods.Any())
+                    {
+                        await _dbContext.DeliveryMethods.AddRangeAsync(methods);
                         await _dbContext.SaveChangesAsync();
                     }
                 }
 
-                if (!_dbContext.Products.Any())
-                {
-                    var productsData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeeding\products.json");
-                    // Convert from json to c# object [deserialization]
-                    var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-                    if (products is not null && products.Any())
-                    {
-                        await _dbContext.AddRangeAsync(products);
-                        await _dbContext.SaveChangesAsync();
-                    }
-                }
-
-
+                // }
 
             }
             catch (Exception e)
