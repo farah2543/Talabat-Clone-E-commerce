@@ -32,6 +32,8 @@ namespace E_commerce
             }
 
             app.UseStaticFiles();
+            app.UseCors("CORSPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

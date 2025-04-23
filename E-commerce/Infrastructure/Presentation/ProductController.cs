@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Presentation
 {
-    [Authorize]
+    
 
     public class ProductController(IServiceManager _serviceManager) : ApiController
     {
