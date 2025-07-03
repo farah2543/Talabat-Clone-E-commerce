@@ -16,7 +16,7 @@ namespace Services
     {
         public async Task<OrderResult> CreateOrderAsync(OrderRequest request, string userEmail)
         {
-            var shippingAddress = mapper.Map<ShippingAddress>(request.ShippingAddress);
+            var shippingAddress = mapper.Map<ShippingAddress>(request.ShipToAddress);
 
             var basket = await basketRepository.GetBasketAsync(request.BasketId)
                 ?? throw new BasketNotFoundException(request.BasketId);
@@ -34,11 +34,21 @@ namespace Services
             var deliveryMethod = await unitOfWork.GenericRepository<DeliveryMethod, int>()
                 .GetByIdAsync(request.DeliveryMethodId)?? throw new DeliveryMethodNotFoundException(request.DeliveryMethodId) ;
 
+            var orderRepo = unitOfWork.GenericRepository<Order, Guid>();
+
+            var existingOrder = await orderRepo.GetByIdAsync(new OrderWithPaymentIntentIdSpecifications(basket.PaymentIntentId));
+
+            if(existingOrder != null)
+            {
+                orderRepo.Delete(existingOrder);
+            }
+
+
             var subtotal = orderItems.Sum(item => item.Price * item.Quantity);
             
-            var order = new Order(userEmail,shippingAddress,orderItems,deliveryMethod,subtotal);
+            var order = new Order(userEmail,shippingAddress,orderItems,deliveryMethod,subtotal,basket.PaymentIntentId);
 
-            await unitOfWork.GenericRepository<Order,Guid >().AddAsync(order);
+            await orderRepo.AddAsync(order);
 
             await unitOfWork.SaveChangesAsync();
 

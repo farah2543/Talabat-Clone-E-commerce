@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Presentation
 {
-    public class AuthenticationController (IServiceManager serviceManager) :ApiController
+    public class AuthenticationController(IServiceManager serviceManager) : ApiController
     {
 
         [HttpPost("Login")]
@@ -15,7 +15,7 @@ namespace Presentation
         public async Task<ActionResult<UserResultDto>> Login(LoginDTO loginDTO)
         {
             var result = await serviceManager.AuthenticationService.Login(loginDTO);
-            
+
             return Ok(result);
         }
 
@@ -31,32 +31,28 @@ namespace Presentation
 
         [HttpGet("EmailExist")]
 
-        public async Task<ActionResult <bool>> CheckEmailExist(string email)
-        {
-            return Ok(await serviceManager.AuthenticationService.CheckIfEmailExists(email));
-
-        }
+        public async Task<ActionResult<bool>> CheckEmailExist(string email)
 
         [Authorize]
         [HttpGet]
 
-        public async Task<ActionResult <UserResultDto>> GetCurrentUser()
+        public async Task<ActionResult<UserResultDto>> GetCurrentUser()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
 
-            var result = await serviceManager.AuthenticationService.GetUserByEmail(email) ;
+            var result = await serviceManager.AuthenticationService.GetUserByEmail(email);
 
-            return Ok(result);  
+            return Ok(result);
         }
 
         [Authorize]
-        [HttpGet ("Address")]
+        [HttpGet("Address")]
 
         public async Task<ActionResult<AddressDTO>> GetAddress()
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
-            var result = await serviceManager.AuthenticationService.GetUserAddress(email) ; 
-            
+            var result = await serviceManager.AuthenticationService.GetUserAddress(email);
+
             return Ok(result);
         }
 
@@ -66,19 +62,11 @@ namespace Presentation
         public async Task<ActionResult<AddressDTO>> UpdateAddress(AddressDTO address)
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
-            var result = await serviceManager.AuthenticationService.UpdateUserAddress(address,email);
+            var result = await serviceManager.AuthenticationService.UpdateUserAddress(address, email);
+
 
             return Ok(result);
         }
-
-        
-
-
-
-
-
-
-
 
 
 
