@@ -1,9 +1,4 @@
-
-using Domain.Contracts;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Data;
-using Persistence.Data.DataSeeding;
-using System.Net.WebSockets;
+using E_commerce.Extensions;
 
 namespace E_commerce
 {
@@ -13,23 +8,21 @@ namespace E_commerce
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            #region Services
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddPresentationServices();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-            });
+            builder.Services.AddCoreServices(builder.Configuration);
 
-            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            #endregion
+
+            #region MiddleWare
 
             var app = builder.Build();
+            app.UseCustomMiddleWare();
 
-            await InitializeDbAsync(app);
+            await app.SeedDbAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -38,22 +31,22 @@ namespace E_commerce
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
+            app.UseCors("CORSPolicy");
+
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
+
             app.Run();
 
-            async Task InitializeDbAsync(WebApplication app)
-            {
-                using var scope = app.Services.CreateScope();
-                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-                await dbInitializer.initializeAsync();
+            #endregion
 
-            }
+
         }
     }
 }
